@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ACE DEGENARÄTE</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Eater&display=swap');
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:#0a0000;height:100%;overflow:hidden;}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:'Eater',cursive;}
+:root{
+  --spikes: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M0,0 L25,0 L12.5,24 Z M25,0 L50,0 L37.5,24 Z M50,0 L75,0 L62.5,24 Z M75,0 L100,0 L87.5,24 Z' fill='%23d4af37' stroke='%23150000' stroke-width='2.5'/><path d='M0,100 L25,100 L12.5,76 Z M25,100 L50,100 L37.5,76 Z M50,100 L75,100 L62.5,76 Z M75,100 L100,100 L87.5,76 Z' fill='%23d4af37' stroke='%23150000' stroke-width='2.5'/><path d='M0,0 L0,25 L24,12.5 Z M0,25 L0,50 L24,37.5 Z M0,50 L0,75 L24,62.5 Z M0,75 L0,100 L24,87.5 Z' fill='%23d4af37' stroke='%23150000' stroke-width='2.5'/><path d='M100,0 L100,25 L76,12.5 Z M100,25 L100,50 L76,37.5 Z M100,50 L100,75 L76,62.5 Z M100,75 L100,100 L76,87.5 Z' fill='%23d4af37' stroke='%23150000' stroke-width='2.5'/><circle cx='12' cy='12' r='7' fill='%23c81e2c' stroke='%23150000' stroke-width='1.5'/><circle cx='88' cy='12' r='7' fill='%23c81e2c' stroke='%23150000' stroke-width='1.5'/><circle cx='12' cy='88' r='7' fill='%23c81e2c' stroke='%23150000' stroke-width='1.5'/><circle cx='88' cy='88' r='7' fill='%23c81e2c' stroke='%23150000' stroke-width='1.5'/></svg>");
+}
+#wrap{position:relative;width:100%;max-width:600px;aspect-ratio:1/1;background:#000;
+  border-style:solid;border-width:26px;border-color:transparent;
+  border-image-source:var(--spikes);border-image-slice:25;border-image-width:26px;border-image-repeat:round;
+  box-shadow:0 0 0 3px #000,inset 0 0 0 2px #000;}
+#frame{position:absolute;inset:0;pointer-events:none;z-index:5;
+  box-shadow:inset 0 0 0 2px rgba(122,16,16,0.7);
+}
+#c{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;background:#000;touch-action:manipulation;}
+#hud{position:absolute;top:10px;left:10px;right:10px;z-index:10;display:flex;justify-content:space-between;align-items:center;color:#f2d33b;font-family:'Eater',cursive;font-size:20px;letter-spacing:1px;text-shadow:2px 2px 0 #000,-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000;pointer-events:none;}
+#hud span{background:rgba(10,0,0,0.55);
+  border-radius:4px;
+  padding:4px 10px;box-shadow:0 0 10px rgba(0,0,0,0.7);}
+#overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,rgba(40,0,0,0.92),rgba(0,0,0,0.97));text-align:center;color:#e8c96a;padding:14px;}
+#overlay.hidden{display:none;}
+.panel{max-width:90%;}
+h1.title{font-family:'UnifrakturCook',cursive;font-size:44px;color:#d4af37;margin:0 0 4px 0;text-shadow:0 0 8px #c81e2c,0 0 18px #7a0000;letter-spacing:2px;}
+.sub{font-size:13px;color:#c81e2c;margin-bottom:14px;letter-spacing:1.5px;text-transform:uppercase;font-family:'Eater',cursive;text-shadow:0 0 3px #000;}
+h2.lvl{font-family:'Eater',cursive;font-size:26px;color:#d4af37;margin:0 0 10px 0;letter-spacing:1px;text-shadow:0 0 8px #c81e2c;}
+p.msg{font-size:14px;color:#e8c96a;margin:6px 0 12px 0;font-family:'Eater',cursive;letter-spacing:0.5px;}
+.btn{margin-top:14px;display:inline-block;padding:12px 26px;
+  background:linear-gradient(#3a0000,#0a0000);
+  border-style:solid;border-width:14px;border-color:transparent;
+  border-image-source:var(--spikes);border-image-slice:25;border-image-width:14px;border-image-repeat:round;
+  color:#e8c96a;font-family:'Eater',cursive;font-size:16px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  box-shadow:0 0 0 3px #000;}
+.btn:hover{
+  background:linear-gradient(#5a0000,#1a0000);
+  filter:brightness(1.2);
+  box-shadow:0 0 0 3px #000;}
+.score{color:#d4af37;font-size:16px;margin:8px 0;font-family:'Eater',cursive;letter-spacing:1px;}
+#crt{position:absolute;inset:0;pointer-events:none;z-index:6;
+  background:
+    repeating-linear-gradient(rgba(0,0,0,0) 0px,rgba(0,0,0,0) 1px,rgba(0,0,0,0.22) 2px,rgba(0,0,0,0.22) 3px),
+    radial-gradient(ellipse at center,rgba(255,255,255,0.05) 0%,rgba(0,0,0,0) 45%,rgba(0,0,0,0.55) 100%);
+  mix-blend-mode:multiply;
+  animation:crtFlicker 6s infinite steps(60);
+}
+#crt::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,0.28) 50%);
+  background-size:100% 4px;
+  mix-blend-mode:overlay;
+}
+#crt::after{
+  content:"";position:absolute;inset:0;
+  box-shadow:inset 0 0 60px 18px rgba(0,0,0,0.65),inset 0 0 140px 40px rgba(0,0,0,0.4);
+}
+@keyframes crtFlicker{
+  0%,96%,100%{opacity:1;}
+  97%{opacity:0.88;}
+  98%{opacity:0.97;}
+  99%{opacity:0.9;}
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+<canvas id="c" width="600" height="600"></canvas>
+<div id="hud">
+  <span id="hLvl">LEVEL 1</span>
+  <span id="hScore">CHIPS: 0</span>
+  <span id="hLives">♥ ♥ ♥</span>
+</div>
+<div id="overlay"><div class="panel" id="panelInner"></div></div>
+<div id="frame"></div>
+<div id="crt"></div>
+<div id="mediaHolder" style="position:absolute;width:0;height:0;overflow:hidden;"></div>
+</div>
+<script>
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+ctx.imageSmoothingEnabled=false;
+const W=cv.width,H=cv.height,FLOOR_H=110,GY=H-FLOOR_H;
+const overlay=document.getElementById('overlay'),panel=document.getElementById('panelInner');
+const hLvl=document.getElementById('hLvl'),hScore=document.getElementById('hScore'),hLives=document.getElementById('hLives');
+
+function buildSprite(mat,pal,s){
+  const w=mat[0].length,h=mat.length;
+  const off=document.createElement('canvas');off.width=w*s;off.height=h*s;
+  const o=off.getContext('2d');
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+    const ch=mat[y][x];
+    if(ch!=='.'){o.fillStyle=pal[ch];o.fillRect(x*s,y*s,s,s);}
+  }
+  return off;
+}
+const SCALE=5;
+const PAL={k:'#141414',g:'#d4af37',r:'#c81e2c',w:'#f5f0e0'};
+/* giant floating skull, side profile facing right (the direction of
+   travel). Drawn with real shapes (arcs/paths) rather than a coarse pixel
+   grid so the eye socket, nasal cavity, jawline, and individual teeth are
+   all clearly readable — the game's own imageSmoothingEnabled=false plus
+   the #c canvas's pixelated CSS still give it the same blocky retro look
+   as everything else once it's drawn onto the main canvas. Two frames
+   (jaw mostly shut / jaw dropped open) give it an idle chatter. */
+const SKULL_W=76,SKULL_H=92;
+function buildSkull(mouthGap){
+  const off=document.createElement('canvas');off.width=SKULL_W;off.height=SKULL_H;
+  const o=off.getContext('2d');
+  const BONE='#dcdad6',BONE_SH='#a9a6a2',DARK='#17171f',TEETH='#efe6ba';
+  o.fillStyle=BONE;
+  o.beginPath();
+  o.moveTo(10,10);
+  o.quadraticCurveTo(40,-4,60,14);
+  o.quadraticCurveTo(70,20,66,26);
+  o.quadraticCurveTo(58,30,62,34);
+  o.quadraticCurveTo(72,40,66,46);
+  o.quadraticCurveTo(58,50,64,54);
+  o.lineTo(70,60);
+  o.quadraticCurveTo(72,66,64,70);
+  o.quadraticCurveTo(62,78,54,84);
+  o.quadraticCurveTo(34,88,20,82);
+  o.quadraticCurveTo(6,74,4,58);
+  o.quadraticCurveTo(0,40,4,24);
+  o.quadraticCurveTo(2,14,10,10);
+  o.closePath();o.fill();
+  // soft shadow along the underside/back of the cranium for roundness
+  o.fillStyle=BONE_SH;
+  o.beginPath();
+  o.moveTo(4,58);o.quadraticCurveTo(0,40,4,24);o.quadraticCurveTo(2,14,10,10);
+  o.quadraticCurveTo(20,12,15,22);o.quadraticCurveTo(8,42,12,58);o.closePath();o.fill();
+  // coronal suture line across the top of the skull
+  o.strokeStyle=BONE_SH;o.lineWidth=2;o.lineCap='round';
+  o.beginPath();o.moveTo(14,12);o.quadraticCurveTo(34,4,54,14);o.stroke();
+  // brow ridge shadow above the eye
+  o.beginPath();o.moveTo(30,20);o.quadraticCurveTo(46,13,62,20);o.stroke();
+  // eye socket
+  o.fillStyle=DARK;
+  o.beginPath();o.ellipse(44,32,9,10,0,0,Math.PI*2);o.fill();
+  // cheekbone shading below the eye
+  o.fillStyle=BONE_SH;
+  o.beginPath();o.ellipse(38,48,8,4,0.3,0,Math.PI*2);o.fill();
+  // nasal cavity
+  o.fillStyle=DARK;
+  o.beginPath();o.moveTo(56,36);o.quadraticCurveTo(64,42,58,50);o.quadraticCurveTo(52,44,56,36);o.closePath();o.fill();
+  // ear hole
+  o.beginPath();o.arc(12,50,3,0,Math.PI*2);o.fill();
+  // open-mouth cavity, then upper/lower teeth on top (gap animates the jaw)
+  o.fillStyle=DARK;o.fillRect(20,58,42,20+mouthGap);
+  const teethX=[20,28,36,44,52];
+  o.fillStyle=TEETH;
+  teethX.forEach(tx=>{o.fillRect(tx,58,6,10);o.fillRect(tx,70+mouthGap,6,10);});
+  o.strokeStyle=DARK;o.lineWidth=1;
+  teethX.forEach(tx=>{
+    o.beginPath();o.moveTo(tx+3,58);o.lineTo(tx+3,68);o.stroke();
+    o.beginPath();o.moveTo(tx+3,70+mouthGap);o.lineTo(tx+3,80+mouthGap);o.stroke();
+  });
+  return off;
+}
+const playerSprites=[buildSkull(2),buildSkull(9)];
+const PLAYER_W=SKULL_W,PLAYER_H=SKULL_H;
+
+const SM_CORE=["kkkkkkkkkk","kggggggggk","kgrrrrrrgk","kgrwwwwrgk","kgrwgggwgk","kgrwwwwrgk","kggggggggk","kkkkkkkkkk","kk.kkkk.kk","kk.kkkk.kk","kkgkkkkgkk","kk.kkkk.kk","kk......kk","kkkkkkkkkk"];
+const SM=['kkkkkkkkkkkk',...SM_CORE.map(r=>'k'+r+'k'),'kkkkkkkkkkkk'];
+const smSprite=buildSprite(SM,PAL,SCALE);
+const OBST_W=12*SCALE,OBST_H=SM.length*SCALE;
+
+function buildChip(swap){
+  // black & red poker chip. swap=false: black body / red center.
+  // swap=true: colors flipped, so alternating chips read black-then-red.
+  const bodyCol=swap?'#c81e2c':'#111';
+  const edgeCol=swap?'#111':'#c81e2c';
+  const rimCol=swap?'#7a0000':'#3a0000';
+  const faceCol=swap?'#c81e2c':'#141414';
+  const centerCol=swap?'#141414':'#c81e2c';
+  const off=document.createElement('canvas');off.width=40;off.height=40;
+  const o=off.getContext('2d');
+  const cx=20,cy=20;
+  // outer body
+  o.fillStyle=bodyCol;
+  o.beginPath();o.arc(cx,cy,19,0,Math.PI*2);o.fill();
+  // edge spots (classic chip stripes) sitting on the outer rim
+  o.fillStyle=edgeCol;
+  for(let i=0;i<8;i++){
+    const a=i*Math.PI/4;
+    o.save();
+    o.translate(cx,cy);
+    o.rotate(a);
+    o.fillRect(-3.5,-19,7,7);
+    o.restore();
+  }
+  // thin dark rim to separate edge marks from face
+  o.strokeStyle=rimCol;o.lineWidth=2;
+  o.beginPath();o.arc(cx,cy,15.5,0,Math.PI*2);o.stroke();
+  // white inner ring
+  o.fillStyle='#f5f0e0';
+  o.beginPath();o.arc(cx,cy,14,0,Math.PI*2);o.fill();
+  // face
+  o.fillStyle=faceCol;
+  o.beginPath();o.arc(cx,cy,11,0,Math.PI*2);o.fill();
+  // center
+  o.fillStyle=centerCol;
+  o.beginPath();o.arc(cx,cy,5,0,Math.PI*2);o.fill();
+  return off;
+}
+const chipSprites=[buildChip(false),buildChip(true)];
+const CHIP_D=30;
+
+const FL=["g.........","grrrrrrgg.","grrggrrg..","grrgggrg..","grrrggrg..","grrrrrrg..","grrrrrrg..",...Array(12).fill("g........."),"gggggggggg"];
+const flagSprite=buildSprite(FL,PAL,SCALE);
+const FLAG_W=10*SCALE,FLAG_H=FL.length*SCALE;
+
+/* ==== SET YOUR OWN WIN SONGS HERE ====
+   Paste a YouTube link or a direct audio file URL (mp3/ogg/wav) for each level's flag.
+   This plays automatically for every player when they reach the flag - it is NOT something
+   the player types in. Leave a slot blank ("") to have no song for that level. */
+const LEVEL_SONGS=[
+  "https://fntmmm.github.io/msc/city%20of%20sins%20snip.mp3",
+  "https://fntmmm.github.io/msc/luv%20the%20sound%20snip.mp3",
+  "https://fntmmm.github.io/msc/never%20live%20without%20it%20snip.mp3"
+];
+
+const LEVELS=[
+  {len:2800,speed:2.6,gap:[300,400]},
+  {len:3600,speed:3.1,gap:[260,340]},
+  {len:4400,speed:3.6,gap:[230,300]}
+];
+
+let state='title',level=0,dist=0,score=0,lives=3,invuln=0,frame=0;
+let obstacles=[],chips=[];
+let player={x:110,y:GY-PLAYER_H,vy:0,onGround:true};
+
+/* --- jump tuning ---
+   Snappy hop with enough height to clear the machines, plus a forward speed boost
+   while airborne (extra scroll distance) so the player is thrust ahead over gaps
+   instead of hanging in place. */
+const JUMP_VY=-17;
+const GRAVITY=0.62;
+const AIR_THRUST=0.55; // extra fraction of level speed added to dist while airborne
+
+function genLevel(cfg){
+  obstacles=[];chips=[];
+  let x=560;
+  while(x<cfg.len-320){
+    obstacles.push({x:x});
+    const gap=cfg.gap[0]+Math.random()*(cfg.gap[1]-cfg.gap[0]);
+    const chipX=x+gap/2-40;
+    for(let i=0;i<3;i++)chips.push({x:chipX+i*28,idx:i,got:false,col:chips.length%2});
+    x+=gap;
+  }
+}
+function resetPlayer(){player.y=GY-PLAYER_H;player.vy=0;player.onGround=true;invuln=0;}
+function startGame(){level=0;score=0;lives=3;dist=0;resetPlayer();genLevel(LEVELS[level]);state='playing';hideOverlay();}
+function startLevel(i){level=i;dist=0;resetPlayer();genLevel(LEVELS[level]);state='playing';hideOverlay();}
+function jump(){if(state==='playing'&&player.onGround){player.vy=JUMP_VY;player.onGround=false;}}
+
+function hideOverlay(){overlay.classList.add('hidden');}
+function showOverlay(html){panel.innerHTML=html;overlay.classList.remove('hidden');}
+
+function showTitle(){
+  state='title';
+  showOverlay(`<h1 class="title">ACE DEGENARÄTE</h1><div class="sub">a low-stakes run through the house of losses</div>
+  <p class="msg">tap / click / SPACE to hop the poker machines.<br>grab the chips. don't get busted.</p>
+  <div class="btn" onclick="startGame()">START THE RUN</div>`);
+}
+function showLevelComplete(){
+  state='levelcomplete';
+  const last=level>=LEVELS.length-1;
+  playMedia(LEVEL_SONGS[level]);
+  showOverlay(`<h2 class="lvl">FLAG REACHED - LEVEL ${level+1} CLEARED</h2>
+  <div class="score">CHIPS: ${score}</div>
+  <p class="msg">${last?'the house is closing out on you.':'on to the next floor.'}</p>
+  <div class="btn" onclick="onLevelContinue(${last})">${last?'FINISH':'CONTINUE'}</div>`);
+}
+function onLevelContinue(last){
+  if(last)showFinished();else startLevel(level+1);
+}
+function showGameOver(){
+  state='gameover';
+  showOverlay(`<h2 class="lvl">BUSTED</h2><div class="score">CHIPS: ${score}</div>
+  <p class="msg">the house always wins... eventually.</p>
+  <div class="btn" onclick="startGame()">TRY AGAIN</div>`);
+}
+function showFinished(){
+  state='finished';
+  showOverlay(`<h1 class="title" style="font-size:32px;">YOU BEAT THE HOUSE</h1>
+  <div class="score">TOTAL CHIPS: ${score}</div>
+  <div class="btn" onclick="startGame()">RUN IT BACK</div>`);
+}
+function playMedia(url){
+  const mc=document.getElementById('mediaHolder');mc.innerHTML='';
+  if(!url)return;
+  if(url.indexOf('youtube.com')>-1||url.indexOf('youtu.be')>-1){
+    const m=url.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{6,})/);
+    const id=m?m[1]:'';
+    if(id)mc.innerHTML='<iframe width="2" height="2" src="https://www.youtube.com/embed/'+id+'?autoplay=1" allow="autoplay" frameborder="0"></iframe>';
+  }else{
+    mc.innerHTML='<audio autoplay src="'+url.replace(/"/g,'')+'"></audio>';
+  }
+}
+let audioCtx=null;
+function playCoinSound(){
+  // short synthesized coin blip - two quick rising tones, no external file needed
+  try{
+    if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended')audioCtx.resume();
+    const now=audioCtx.currentTime;
+    const notes=[[988,0],[1568,0.07]]; // B5 then G6, classic coin-pickup interval
+    notes.forEach(([freq,delay])=>{
+      const osc=audioCtx.createOscillator();
+      const gain=audioCtx.createGain();
+      osc.type='square';
+      osc.frequency.setValueAtTime(freq,now+delay);
+      gain.gain.setValueAtTime(0.001,now+delay);
+      gain.gain.exponentialRampToValueAtTime(0.18,now+delay+0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001,now+delay+0.13);
+      osc.connect(gain);gain.connect(audioCtx.destination);
+      osc.start(now+delay);osc.stop(now+delay+0.14);
+    });
+  }catch(e){/* audio not available - fail silently */}
+}
+
+window.addEventListener('keydown',e=>{
+  if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){e.preventDefault();jump();}
+});
+cv.addEventListener('mousedown',jump);
+cv.addEventListener('touchstart',e=>{e.preventDefault();jump();},{passive:false});
+
+function update(){
+  if(state!=='playing')return;
+  const cfg=LEVELS[level];
+  const wasAirborne=!player.onGround;
+  dist+=cfg.speed;
+  if(wasAirborne){dist+=cfg.speed*AIR_THRUST;} // forward thrust while jumping
+
+  const prevBottom=player.y+PLAYER_H;
+  player.vy+=GRAVITY;player.y+=player.vy;
+  let newBottom=player.y+PLAYER_H;
+
+  if(invuln>0)invuln--;
+
+  /* obstacle collision: land safely on top (like a platform) if falling onto it,
+     otherwise treat it as a solid wall that blocks forward progress and damages you */
+  const obstTop=GY-OBST_H;
+  let landed=false;
+  for(const o of obstacles){
+    const sx=o.x-dist;
+    const overlapX=sx<player.x+PLAYER_W && sx+OBST_W>player.x;
+    if(!overlapX)continue;
+    if(player.vy>=0 && prevBottom<=obstTop+8 && newBottom>=obstTop){
+      player.y=obstTop-PLAYER_H;
+      player.vy=0;
+      newBottom=obstTop;
+      landed=true;
+    }else if(newBottom>obstTop+4){
+      const maxDist=o.x-PLAYER_W-player.x;
+      if(dist>maxDist)dist=maxDist;
+      if(invuln<=0){
+        lives--;invuln=60;
+        if(lives<=0){showGameOver();return;}
+      }
+    }
+  }
+
+  if(landed){
+    player.onGround=true;
+  }else if(player.y>=GY-PLAYER_H){
+    player.y=GY-PLAYER_H;player.vy=0;player.onGround=true;
+  }else{
+    player.onGround=false;
+  }
+  for(const c of chips){
+    if(c.got)continue;
+    const sx=c.x-dist;
+    const cy=GY-150+Math.sin(frame*0.12+c.idx)*8;
+    if(sx<player.x+PLAYER_W-6 && sx+CHIP_D>player.x+6 && player.y+PLAYER_H>cy-16 && player.y<cy+16){
+      c.got=true;score+=10;playCoinSound();
+    }
+  }
+  const flagSx=cfg.len-dist;
+  if(flagSx<player.x+PLAYER_W){showLevelComplete();}
+  frame++;
+  hLvl.textContent='LEVEL '+(level+1);
+  hScore.textContent='CHIPS: '+score;
+  hLives.textContent='♥ '.repeat(Math.max(lives,0)).trim();
+}
+
+const SKY_THEMES=[
+  { // Level 1 - Day
+    stops:[[0,'#7ec8e3'],[0.55,'#cfe8f0'],[0.82,'#f4d78b'],[1,'#e8a23a']],
+    sunY:110,sunCore:'#fff2b0',sunGlowInner:'#fff6d0',sunGlowMid:'#ffdd66',
+    skyA1:'#5a1420',skyA2:'#3a0d16',skyB1:'#1a0000',skyB2:'#0d0d0d',
+    winA:'rgba(212,175,55,0.35)',winB:'#d4af37',stars:false
+  },
+  { // Level 2 - Sunset
+    stops:[[0,'#2b1650'],[0.35,'#7a2b4a'],[0.62,'#c8502e'],[0.85,'#e8862f'],[1,'#f2b23a']],
+    sunY:300,sunCore:'#ffb347',sunGlowInner:'#ffe3a8',sunGlowMid:'#ff7a3c',
+    skyA1:'#2a0812',skyA2:'#1a0509',skyB1:'#0d0006',skyB2:'#050002',
+    winA:'rgba(255,150,60,0.4)',winB:'#f2a33a',stars:false
+  },
+  { // Level 3 - Night
+    stops:[[0,'#02030d'],[0.5,'#0a0f2b'],[0.8,'#141a3a'],[1,'#1c2140']],
+    sunY:150,sunCore:'#e8e8f0',sunGlowInner:'#ffffff',sunGlowMid:'#8892c8',
+    skyA1:'#0a0a12',skyA2:'#050508',skyB1:'#000000',skyB2:'#000000',
+    winA:'rgba(255,221,120,0.55)',winB:'#ffdd66',stars:true
+  }
+];
+function drawSkyline(px,colA,colB,minH,maxH,bw,winColor,baseY){
+  const shift=Math.floor(dist*px/bw);
+  const frac=(dist*px)%bw;
+  const count=Math.ceil(W/bw)+2;
+  for(let i=-1;i<count;i++){
+    const idx=i+shift;
+    const x=i*bw-frac;
+    const seed=Math.abs((idx*2654435761)%997);
+    const h=minH+(seed%(maxH-minH));
+    ctx.fillStyle=(idx%2===0)?colA:colB;
+    ctx.fillRect(x,baseY-h,bw-4,h);
+    ctx.fillStyle=winColor;
+    for(let wy=baseY-h+10;wy<baseY-10;wy+=16){
+      for(let wx=x+6;wx<x+bw-10;wx+=10){ctx.fillRect(wx,wy,4,6);}
+    }
+  }
+}
+function drawBackground(){
+  const theme=SKY_THEMES[level]||SKY_THEMES[0];
+  const g=ctx.createLinearGradient(0,0,0,GY);
+  theme.stops.forEach(s=>g.addColorStop(s[0],s[1]));
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,GY);
+  if(theme.stars){
+    ctx.fillStyle='rgba(255,255,255,0.85)';
+    for(let i=0;i<70;i++){
+      const sxp=(i*97+Math.floor(dist*0.05))%W;
+      const syp=(i*53)%(GY-160);
+      ctx.fillRect(sxp,syp,2,2);
+    }
+  }
+  const sx=W-110,sy=theme.sunY;
+  const sunGrad=ctx.createRadialGradient(sx,sy,5,sx,sy,75);
+  sunGrad.addColorStop(0,theme.sunGlowInner);sunGrad.addColorStop(0.5,theme.sunGlowMid);sunGrad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=sunGrad;ctx.beginPath();ctx.arc(sx,sy,75,0,7);ctx.fill();
+  ctx.fillStyle=theme.sunCore;ctx.beginPath();ctx.arc(sx,sy,32,0,7);ctx.fill();
+  drawSkyline(0.12,theme.skyA1,theme.skyA2,110,220,54,theme.winA,GY);
+  drawSkyline(0.3,theme.skyB1,theme.skyB2,80,170,44,theme.winB,GY);
+  ctx.fillStyle='#000';ctx.fillRect(0,GY,W,H-GY);
+  const tile=24;const off=(-dist)%tile;
+  for(let x=off-tile;x<W;x+=tile){
+    ctx.fillStyle=(Math.floor(x/tile))%2===0?'#a4291f':'#141414';
+    ctx.fillRect(x,GY,tile,H-GY);
+  }
+  ctx.fillStyle='#d4af37';ctx.fillRect(0,GY,W,3);
+}
+function draw(){
+  drawBackground();
+  if(state==='playing'||state==='levelcomplete'||state==='gameover'){
+    for(const o of obstacles){
+      const sx=o.x-dist;
+      if(sx>-OBST_W&&sx<W)ctx.drawImage(smSprite,sx,GY-OBST_H,OBST_W,OBST_H);
+    }
+    const flagSx=LEVELS[level].len-dist;
+    if(flagSx>-FLAG_W&&flagSx<W)ctx.drawImage(flagSprite,flagSx,GY-FLAG_H,FLAG_W,FLAG_H);
+    for(const c of chips){
+      if(c.got)continue;
+      const sx=c.x-dist;
+      if(sx>-CHIP_D&&sx<W){
+        const cy=GY-150+Math.sin(frame*0.12+c.idx)*8;
+        ctx.drawImage(chipSprites[c.col],sx,cy-CHIP_D/2,CHIP_D,CHIP_D);
+      }
+    }
+    if(invuln<=0||Math.floor(invuln/5)%2===0){
+      const f=playerSprites[player.onGround?(Math.floor(frame/6)%2):0];
+      ctx.drawImage(f,player.x,player.y,PLAYER_W,PLAYER_H);
+    }
+  }
+}
+function loop(){update();draw();requestAnimationFrame(loop);}
+showTitle();
+loop();
+</script>
+</body>
+</html>
